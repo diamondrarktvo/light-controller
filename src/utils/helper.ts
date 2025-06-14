@@ -129,7 +129,7 @@ type ResponsiveSize = "none" | "xxs" | "xs" | "s" | "m" | "l" | "xl" | "xxl";
  */
 const specificValueRelativeToThemeForIos = (
   valueForIos: ResponsiveSize,
-  valueForAndroid: ResponsiveSize,
+  valueForAndroid: ResponsiveSize
 ): ResponsiveSize => {
   if (Platform.OS === "ios") {
     return valueForIos;
@@ -146,7 +146,7 @@ const specificValueRelativeToThemeForIos = (
 const showToast = (
   type: "success" | "error" | "info",
   text1?: string | undefined,
-  text2?: string | undefined,
+  text2?: string | undefined
 ) => {
   Toast.show({
     type,
@@ -212,6 +212,14 @@ function extractFileInfo(filePath: string) {
   return { fileName, content_type };
 }
 
+function encodeBase64(data: string): string {
+  return Buffer.from(data).toString("base64");
+}
+
+function decodeBase64(data: string): string {
+  return Buffer.from(data, "base64").toString("utf8");
+}
+
 export const Layouts = {
   widthPercentageToDP,
   heightPercentageToDP,
@@ -236,4 +244,6 @@ export const Helpers = {
   getAppVersion,
   getFirstLetter,
   extractFileInfo,
+  encodeBase64,
+  decodeBase64,
 };

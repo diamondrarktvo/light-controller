@@ -4,6 +4,9 @@ import { Provider } from "react-redux";
 import { store } from "_store";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Main from "src/Main";
+import { Buffer } from "buffer";
+
+global.Buffer = Buffer;
 
 export default function App() {
   return (
