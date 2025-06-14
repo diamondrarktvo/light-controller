@@ -1,5 +1,6 @@
 {
-   "content": {
-      "welcome": "Welcome user"
-   }
+  "content": {
+    "welcome": "Welcome user",
+    "lightState": "The light is currently {{lightState}}"
+  }
 }

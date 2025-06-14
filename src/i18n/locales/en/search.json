@@ -1,0 +1,10 @@
+{
+  "content": {
+    "search_device": "Search Device"
+  },
+  "button": {
+    "search": "Search",
+    "connect": "Connect",
+    "disconnect": "Disconnect"
+  }
+}

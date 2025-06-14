@@ -8,6 +8,7 @@ import { StackParamList } from "./Types/Types";
 
 //IMPORT NAVIGATION TAB
 import TabNavigation from "./TabNavigation";
+import { SearchDeviceScreen } from "_features";
 
 const Stack = createStackNavigator<StackParamList>();
 
@@ -19,6 +20,7 @@ const StackNavigation = () => {
           screenOptions={stackNavigationConfig.screenOptionsForHiddenHeader}
         >
           <Stack.Screen name={"main_tabs"} component={TabNavigation} />
+          <Stack.Screen name={"search_device"} component={SearchDeviceScreen} />
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>
