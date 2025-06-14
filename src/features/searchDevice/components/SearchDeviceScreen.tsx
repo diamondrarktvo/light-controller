@@ -58,22 +58,31 @@ export default function SearchDeviceScreen() {
   return (
     <Scaffold typeOfScreen="stack">
       <Box flex={1}>
-        <Text variant={"title"} fontWeight={"bold"}>
-          {t("search:content.search_device")}
-        </Text>
-        <Box flex={1} marginTop={"l"}>
-          <FlashList
-            keyExtractor={(item) => item.id.toString()}
-            estimatedItemSize={200}
-            data={deviceList}
-            renderItem={RenderDeviceItem}
-            extraData={deviceList}
-            showsVerticalScrollIndicator={false}
-            ListEmptyComponent={
-              <EmptyList textToShow={t("common:content.empty_menu")} />
-            }
-          />
-        </Box>
+        <FlashList
+          keyExtractor={(item) => item.id.toString()}
+          estimatedItemSize={200}
+          data={[]}
+          renderItem={RenderDeviceItem}
+          extraData={deviceList}
+          showsVerticalScrollIndicator={false}
+          ListHeaderComponent={
+            <Box marginBottom={"l"}>
+              <Text variant={"title"} fontWeight={"bold"}>
+                {t("search:content.search_device")}
+              </Text>
+
+              <Button
+                marginTop={"l"}
+                variant="tertiary"
+                color="primary"
+                label={t("search:button.search")}
+              />
+            </Box>
+          }
+          ListEmptyComponent={
+            <EmptyList textToShow={t("search:content.empty_list")} />
+          }
+        />
       </Box>
     </Scaffold>
   );

@@ -1,6 +1,7 @@
 {
   "content": {
-    "search_device": "Search Device"
+    "search_device": "Search Device",
+    "empty_list": "No devices found"
   },
   "button": {
     "search": "Search",

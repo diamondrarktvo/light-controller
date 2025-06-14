@@ -1,6 +1,7 @@
 {
   "content": {
-    "search_device": "Rechercher un appareil"
+    "search_device": "Rechercher un appareil",
+    "empty_list": "Aucun appareil trouvé"
   },
   "button": {
     "search": "Rechercher",
