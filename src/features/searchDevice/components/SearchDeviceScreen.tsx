@@ -3,9 +3,14 @@ import { useTranslation } from "react-i18next";
 import { useCallback, useMemo } from "react";
 import { Device } from "../Types/Types";
 import { FlashList } from "@shopify/flash-list";
+import { useNavigation } from "@react-navigation/native";
+import { useAppDispatch } from "_store";
+import { setDevice } from "../SearchDeviceSlice";
 
 export default function SearchDeviceScreen() {
   const { t } = useTranslation(["home", "common", "search"]);
+  const navigation = useNavigation();
+  const dispatch = useAppDispatch();
 
   //logics
   const deviceList: Device[] = useMemo(() => {
@@ -24,6 +29,22 @@ export default function SearchDeviceScreen() {
       },
     ];
   }, []);
+
+  const handleGoBack = useCallback(() => {
+    if (!navigation || !navigation.goBack) return;
+
+    navigation.goBack();
+  }, [navigation]);
+
+  const handleConnectDevice = useCallback(
+    (device: Device) => {
+      if (!dispatch || device) return;
+
+      dispatch(setDevice(device));
+      handleGoBack();
+    },
+    [dispatch, handleGoBack]
+  );
 
   //components
   const RenderDeviceItem = useCallback(({ item }: { item: Device }) => {
@@ -44,12 +65,14 @@ export default function SearchDeviceScreen() {
         </Column>
 
         <Button
-          variant="primary"
+          variant={item.isConnected ? "primary" : "tertiary"}
+          color={item.isConnected ? "primary" : "secondary"}
           label={
             item.isConnected
               ? t("search:button.disconnect")
               : t("search:button.connect")
           }
+          onPress={() => handleConnectDevice(item)}
         />
       </Row>
     );
@@ -61,7 +84,7 @@ export default function SearchDeviceScreen() {
         <FlashList
           keyExtractor={(item) => item.id.toString()}
           estimatedItemSize={200}
-          data={[]}
+          data={deviceList}
           renderItem={RenderDeviceItem}
           extraData={deviceList}
           showsVerticalScrollIndicator={false}

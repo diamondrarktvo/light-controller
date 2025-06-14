@@ -4,3 +4,7 @@ export type Device = {
   uuid: string;
   isConnected?: boolean;
 };
+
+export type SearchDeviceState = {
+  devices: Device[];
+};
