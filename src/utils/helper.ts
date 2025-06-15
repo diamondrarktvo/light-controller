@@ -186,8 +186,6 @@ function getFirstLetter(text: string): string {
 function encodeBase64(data: number[]): string {
   if (!data) return "";
 
-  console.log("kindi data", data);
-  console.log("kindiii", Buffer.from(data).toString("base64"));
   return Buffer.from(data).toString("base64");
 }
 
