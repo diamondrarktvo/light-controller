@@ -125,6 +125,7 @@ export const useBLE = (): BLEApi => {
         "error",
         getBleErrorMessage(error as BleError | Error | null, {}, t)
       );
+      dispatch(removeDevice(device));
       setConnectingOrDeconnectingDeviceID(null);
     }
   };

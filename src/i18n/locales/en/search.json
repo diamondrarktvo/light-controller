@@ -8,6 +8,7 @@
     "search": "Search",
     "stop": "Stop",
     "connect": "Connect",
-    "disconnect": "Disconnect"
+    "disconnect": "Disconnect",
+    "scan": "Scan Devices"
   }
 }

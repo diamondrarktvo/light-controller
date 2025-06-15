@@ -8,7 +8,7 @@ import { StackParamList } from "./Types/Types";
 
 //IMPORT NAVIGATION TAB
 import TabNavigation from "./TabNavigation";
-import { SearchDeviceScreen } from "_features";
+import { SearchDeviceScreen, LightControllerScreen } from "_features";
 
 const Stack = createStackNavigator<StackParamList>();
 
@@ -21,6 +21,10 @@ const StackNavigation = () => {
         >
           <Stack.Screen name={"main_tabs"} component={TabNavigation} />
           <Stack.Screen name={"search_device"} component={SearchDeviceScreen} />
+          <Stack.Screen
+            name={"light_controller"}
+            component={LightControllerScreen}
+          />
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>

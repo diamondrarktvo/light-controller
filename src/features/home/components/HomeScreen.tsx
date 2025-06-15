@@ -1,22 +1,44 @@
-import { Box, Scaffold, Text } from "_shared";
+import { Box, Button, EmptyList, Scaffold, Text } from "_shared";
 import { useTranslation } from "react-i18next";
-import { Pressable, StyleSheet } from "react-native";
-import AnimatedLottieView from "lottie-react-native";
-import { BluetoothScan } from "_assets";
+import { StyleSheet } from "react-native";
 import { Layouts } from "_utils";
 import { useNavigation } from "@react-navigation/native";
+import { ButtonSearchPeripheral } from "./ButtonSearchPeripheral";
+import { selectors as bleSelectors } from "../../ble/bleSlice";
+import { useAppSelector } from "_store";
 import { useCallback } from "react";
+import { IDevice } from "src/features/ble/Types/Types";
+import { FlashList } from "@shopify/flash-list";
 
 export default function HomeScreen() {
   const { t } = useTranslation(["home", "common"]);
   const navigation = useNavigation();
+  const allDevicesConnected = useAppSelector(bleSelectors.getDevicesConnected);
 
   //logics
-  const handleNavigateToSearchDevice = useCallback(() => {
+  const handleNavigateTo = useCallback(() => {
     if (!navigation) return;
 
-    navigation.navigate("search_device");
+    navigation.navigate("light_controller");
   }, [navigation]);
+
+  //components
+  const RenderDeviceConncected = useCallback(
+    ({ item }: { item: IDevice }) => {
+      return (
+        <Box>
+          <Button
+            marginTop={"l"}
+            variant="tertiary"
+            color="primary"
+            label={item.name}
+            onPress={handleNavigateTo}
+          />
+        </Box>
+      );
+    },
+    [allDevicesConnected, handleNavigateTo]
+  );
 
   return (
     <Scaffold
@@ -24,17 +46,20 @@ export default function HomeScreen() {
       titleTabScreen={t("common:tab_navigation.label.home")}
     >
       <Box flex={1}>
-        <Text variant={"primaryBold"}>{t("home:content.welcome")}</Text>
-        <Box flex={1} justifyContent={"center"} alignItems={"center"}>
-          <Pressable onPress={handleNavigateToSearchDevice}>
-            <AnimatedLottieView
-              source={BluetoothScan}
-              autoPlay
-              loop
-              style={styles.lottieImg}
-            />
-          </Pressable>
-        </Box>
+        <FlashList
+          keyExtractor={(item) => item.id.toString()}
+          estimatedItemSize={200}
+          data={allDevicesConnected}
+          renderItem={RenderDeviceConncected}
+          extraData={allDevicesConnected}
+          showsVerticalScrollIndicator={false}
+          ListHeaderComponent={
+            <Box flex={1}>
+              <Text variant={"primaryBold"}>{t("home:content.welcome")}</Text>
+              <ButtonSearchPeripheral />
+            </Box>
+          }
+        />
       </Box>
     </Scaffold>
   );
