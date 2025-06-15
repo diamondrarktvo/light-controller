@@ -5,6 +5,8 @@ import Toast from "react-native-toast-message";
 import { SCREEN_HEIGHT, SCREEN_WIDTH, SUPPORTED_LANGUAGES } from "./constants";
 import { LanguageCodeSupportedT } from "./Types";
 import packageJson from "../../package.json";
+import base64 from "react-native-base64";
+
 /**
  *
  * @param inputDate
@@ -213,11 +215,20 @@ function extractFileInfo(filePath: string) {
 }
 
 function encodeBase64(data: string): string {
+  if (!data) return "";
   return Buffer.from(data).toString("base64");
 }
 
-function decodeBase64(data: string): string {
-  return Buffer.from(data, "base64").toString("utf8");
+function decodeBase64(data: string | null): unknown {
+  if (!data) return "";
+
+  const decodedData = Buffer.from(data, "base64");
+
+  return decodedData[0];
+}
+
+function logger(message: string, data: unknown) {
+  console.log(message, JSON.stringify(data, null, 2));
 }
 
 export const Layouts = {
@@ -246,4 +257,5 @@ export const Helpers = {
   extractFileInfo,
   encodeBase64,
   decodeBase64,
+  logger,
 };

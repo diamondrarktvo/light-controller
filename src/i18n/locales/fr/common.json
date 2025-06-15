@@ -1,29 +1,78 @@
 {
-   "tab_navigation": {
-      "label": {
-         "home": "Accueil",
-         "setting": "Paramètre"
-      }
-   },
-   "language": {
-      "label_choice": "Choisir votre langue",
-      "fr": "Français",
-      "en": "Anglais"
-   },
-   "theme": {
-      "label_choice": "Choisissez votre thème",
-      "light": "Clair",
-      "dark": "Sombre"
-   },
-   "content": {
-      "empty_menu": "Aucun menu n'est disponible pour le moment.",
-      "app_version": "Version {{versionNumber}}"
-   },
-   "actions": {
-      "ok": "Ok",
-      "agree": "D'accord",
-      "validate": "Valider",
-      "confirm": "Confirmer",
-      "choose": "Choisir"
-   }
+  "tab_navigation": {
+    "label": {
+      "home": "Accueil",
+      "setting": "Paramètre"
+    }
+  },
+  "language": {
+    "label_choice": "Choisir votre langue",
+    "fr": "Français",
+    "en": "Anglais"
+  },
+  "theme": {
+    "label_choice": "Choisissez votre thème",
+    "light": "Clair",
+    "dark": "Sombre"
+  },
+  "content": {
+    "empty_menu": "Aucun menu n'est disponible pour le moment.",
+    "app_version": "Version {{versionNumber}}"
+  },
+  "actions": {
+    "ok": "Ok",
+    "agree": "D'accord",
+    "validate": "Valider",
+    "confirm": "Confirmer",
+    "choose": "Choisir"
+  },
+  "permissions": {
+    "title": "Autorisation de localisation",
+    "bluetooth": {
+      "scan": "Le Bluetooth Low Energy nécessite une analyse Bluetooth.",
+      "connect": "Le Bluetooth Low Energy nécessite une connexion Bluetooth.",
+      "location": "Le Bluetooth Low Energy nécessite la localisation."
+    }
+  },
+  "ble_errors": {
+    "0": "Une erreur inconnue s'est produite. C'est probablement un bug ! Vérifie la propriété « reason ».",
+    "1": "Le BleManager a été détruit",
+    "2": "L’opération a été annulée",
+    "3": "Le délai d’attente de l’opération a expiré",
+    "4": "L’opération a été rejetée",
+    "5": "UUID ou IDs invalides : {internalMessage}",
+    "100": "Bluetooth n'est pas pris en charge sur cet appareil",
+    "101": "L’appareil n'est pas autorisé à utiliser Bluetooth LE",
+    "102": "Bluetooth est désactivé",
+    "103": "Bluetooth est dans un état inconnu",
+    "104": "Bluetooth est en cours de réinitialisation",
+    "105": "La modification de l'état Bluetooth a échoué",
+    "200": "Échec de la connexion à l’appareil {deviceID}",
+    "201": "L’appareil {deviceID} a été déconnecté",
+    "202": "Échec de la lecture du RSSI pour l’appareil {deviceID}",
+    "203": "L’appareil {deviceID} est déjà connecté",
+    "204": "Appareil {deviceID} introuvable",
+    "205": "L’appareil {deviceID} n'est pas connecté",
+    "206": "Impossible de modifier la taille MTU pour l’appareil {deviceID}",
+    "300": "Échec de la découverte des services pour l’appareil {deviceID}",
+    "301": "Échec de la découverte des services inclus pour l’appareil {deviceID} et le service {serviceUUID}",
+    "302": "Service {serviceUUID} introuvable pour l’appareil {deviceID}",
+    "303": "Services non découverts pour l’appareil {deviceID}",
+    "400": "Échec de la découverte des caractéristiques pour l’appareil {deviceID} et le service {serviceUUID}",
+    "401": "Écriture échouée de la caractéristique {characteristicUUID} pour l’appareil {deviceID} et le service {serviceUUID}",
+    "402": "Lecture échouée de la caractéristique {characteristicUUID} pour l’appareil {deviceID} et le service {serviceUUID}",
+    "403": "Échec de la notification de la caractéristique {characteristicUUID} pour l’appareil {deviceID} et le service {serviceUUID}",
+    "404": "Caractéristique {characteristicUUID} introuvable",
+    "405": "Caractéristiques non découvertes pour l’appareil {deviceID} et le service {serviceUUID}",
+    "406": "Impossible d’écrire dans la caractéristique {characteristicUUID} : format de données invalide : {internalMessage}",
+    "500": "Échec de la découverte du descripteur {descriptorUUID} pour l’appareil {deviceID}, le service {serviceUUID} et la caractéristique {characteristicUUID}",
+    "501": "Écriture échouée du descripteur {descriptorUUID} pour l’appareil {deviceID}, le service {serviceUUID} et la caractéristique {characteristicUUID}",
+    "502": "Lecture échouée du descripteur {descriptorUUID} pour l’appareil {deviceID}, le service {serviceUUID} et la caractéristique {characteristicUUID}",
+    "503": "Descripteur {descriptorUUID} introuvable",
+    "504": "Descripteurs non découverts pour l’appareil {deviceID}, le service {serviceUUID} et la caractéristique {characteristicUUID}",
+    "505": "Impossible d’écrire dans le descripteur {descriptorUUID} : format de données invalide : {internalMessage}",
+    "506": "Impossible d’écrire dans le descripteur {descriptorUUID}. Non autorisé sur iOS et donc interdit sur Android.",
+    "600": "Impossible de démarrer le scan",
+    "601": "Les services de localisation sont désactivés"
+  }
 }

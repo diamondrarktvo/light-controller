@@ -10,7 +10,7 @@ export const store = configureStore({
   reducer: {
     [BaseApi.reducerPath]: BaseApi.reducer,
     theme: themeReducer,
-    device: bleReducer,
+    ble: bleReducer,
   },
 
   middleware: (getDefaultMiddleware) =>

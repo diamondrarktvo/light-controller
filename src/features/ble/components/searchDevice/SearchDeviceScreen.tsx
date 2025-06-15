@@ -1,82 +1,100 @@
 import { Box, Button, Column, EmptyList, Row, Scaffold, Text } from "_shared";
 import { useTranslation } from "react-i18next";
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 import { FlashList } from "@shopify/flash-list";
-import { useNavigation } from "@react-navigation/native";
-import { useAppDispatch } from "_store";
-import { Device } from "../../Types/Types";
-import { setDevice } from "../../bleSlice";
+import { useAppSelector } from "_store";
+import { IDevice } from "../../Types/Types";
+import { selectors as bleSelectors } from "../../bleSlice";
+import { useBLE } from "../../hooks/useBLE";
+import { SMART_LIGHT_PERIPHERAL_NAME } from "../../bleConstant";
+import { isDeviceConnected } from "../../bleUtils";
 
 export default function SearchDeviceScreen() {
   const { t } = useTranslation(["home", "common", "search"]);
-  const navigation = useNavigation();
-  const dispatch = useAppDispatch();
+  const allDevices = useAppSelector(bleSelectors.getAllDevices);
+  const allDevicesConnected = useAppSelector(bleSelectors.getDevicesConnected);
+  const {
+    isLoadingScan,
+    connectingOrDeconnectingDeviceID,
+    requestPermissions,
+    scanForPeripherals,
+    stopScanForPeripherals,
+    connectToDevice,
+    disconnectFromDevice,
+  } = useBLE();
 
   //logics
-  const deviceList: Device[] = useMemo(() => {
-    return [
-      {
-        id: "1",
-        name: "Device 1",
-        uuid: "123e4567-e89b-12d3-a456-426614174000",
-        isConnected: false,
-      },
-      {
-        id: "2",
-        name: "Device 2",
-        uuid: "123e4567-e89b-12d3-a456-426614174001",
-        isConnected: false,
-      },
-    ];
-  }, []);
+  const handleStartAndStopScanForPeripherals = async () => {
+    const isPermissionsEnabled = await requestPermissions();
+    if (isPermissionsEnabled) {
+      if (isLoadingScan) {
+        stopScanForPeripherals();
+      } else {
+        scanForPeripherals(SMART_LIGHT_PERIPHERAL_NAME);
+      }
+    }
+  };
 
-  const handleGoBack = useCallback(() => {
-    if (!navigation || !navigation.goBack) return;
-
-    navigation.goBack();
-  }, [navigation]);
-
-  const handleConnectDevice = useCallback(
-    (device: Device) => {
-      if (!dispatch || device) return;
-
-      dispatch(setDevice(device));
-      handleGoBack();
+  const handleConnectOrDisconnectDevice = useCallback(
+    (device: IDevice) => {
+      const isThisDeviceConnected = isDeviceConnected(
+        device,
+        allDevicesConnected
+      );
+      if (isThisDeviceConnected) {
+        disconnectFromDevice(device);
+      } else {
+        connectToDevice(device);
+      }
     },
-    [dispatch, handleGoBack]
+    [allDevicesConnected, disconnectFromDevice, connectToDevice]
   );
 
   //components
-  const RenderDeviceItem = useCallback(({ item }: { item: Device }) => {
-    return (
-      <Row
-        key={item.id}
-        justifyContent={"space-between"}
-        alignItems={"center"}
-        marginBottom={"m"}
-      >
-        <Column>
-          <Text variant={"primaryBold"} numberOfLines={1}>
-            {item.name}
-          </Text>
-          <Text variant={"secondary"} numberOfLines={2} width={"90%"}>
-            {item.uuid}
-          </Text>
-        </Column>
+  const RenderDeviceItem = useCallback(
+    ({ item }: { item: IDevice }) => {
+      const isThisDeviceConnected = isDeviceConnected(
+        item,
+        allDevicesConnected
+      );
 
-        <Button
-          variant={item.isConnected ? "primary" : "tertiary"}
-          color={item.isConnected ? "primary" : "secondary"}
-          label={
-            item.isConnected
-              ? t("search:button.disconnect")
-              : t("search:button.connect")
-          }
-          onPress={() => handleConnectDevice(item)}
-        />
-      </Row>
-    );
-  }, []);
+      const isConnectingThisDevice =
+        connectingOrDeconnectingDeviceID === item.id;
+
+      return (
+        <Row
+          key={item.id}
+          justifyContent={"space-between"}
+          alignItems={"center"}
+          marginBottom={"m"}
+        >
+          <Column flex={1}>
+            <Text variant={"primaryBold"} numberOfLines={1}>
+              {item.name}
+            </Text>
+            <Text variant={"secondary"} numberOfLines={2} width={"90%"}>
+              {item.id}
+            </Text>
+          </Column>
+
+          {item.isConnectable && (
+            <Button
+              variant={isThisDeviceConnected ? "primary" : "tertiary"}
+              color={isThisDeviceConnected ? "white" : "primary"}
+              label={
+                isThisDeviceConnected
+                  ? t("search:button.disconnect")
+                  : t("search:button.connect")
+              }
+              loading={isConnectingThisDevice}
+              onPress={() => handleConnectOrDisconnectDevice(item)}
+            />
+          )}
+        </Row>
+      );
+    },
+    [allDevicesConnected, connectingOrDeconnectingDeviceID]
+  );
 
   return (
     <Scaffold typeOfScreen="stack">
@@ -84,9 +102,13 @@ export default function SearchDeviceScreen() {
         <FlashList
           keyExtractor={(item) => item.id.toString()}
           estimatedItemSize={200}
-          data={deviceList}
+          data={allDevices}
           renderItem={RenderDeviceItem}
-          extraData={deviceList}
+          extraData={[
+            allDevices,
+            allDevicesConnected,
+            connectingOrDeconnectingDeviceID,
+          ]}
           showsVerticalScrollIndicator={false}
           ListHeaderComponent={
             <Box marginBottom={"l"}>
@@ -98,8 +120,18 @@ export default function SearchDeviceScreen() {
                 marginTop={"l"}
                 variant="tertiary"
                 color="primary"
-                label={t("search:button.search")}
+                label={
+                  isLoadingScan
+                    ? t("search:button.stop")
+                    : t("search:button.search")
+                }
+                onPress={handleStartAndStopScanForPeripherals}
               />
+              {isLoadingScan && (
+                <Text textAlign={"center"} variant={"tertiary"}>
+                  {t("search:content.searching")}
+                </Text>
+              )}
             </Box>
           }
           ListEmptyComponent={

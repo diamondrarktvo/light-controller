@@ -1,10 +1,12 @@
 {
   "content": {
     "search_device": "Search Device",
-    "empty_list": "No devices found"
+    "empty_list": "No devices found",
+    "searching": "Searching..."
   },
   "button": {
     "search": "Search",
+    "stop": "Stop",
     "connect": "Connect",
     "disconnect": "Disconnect"
   }

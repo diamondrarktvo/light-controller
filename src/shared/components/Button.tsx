@@ -62,7 +62,7 @@ type BoxButtonProps = SpacingProps<ThemeT> &
 
 const BoxButton = createRestyleComponent<BoxButtonProps, ThemeT>(
   [spacing, border, createVariant({ themeKey: "buttonVariants" })],
-  Box,
+  Box
 );
 
 /**
@@ -111,7 +111,7 @@ const Button: React.FC<ButtonProps> = ({
         {...rest}
       >
         {loading ? (
-          <ActivityIndicator color="white" />
+          <ActivityIndicator color="secondary" />
         ) : (
           <Row alignItems="center" justifyContent="center">
             {iconLeft && (

@@ -1,12 +1,29 @@
-export interface BLEApi {}
+import { Device } from "react-native-ble-plx";
 
-export type Device = {
+export interface BLEApi {
+  isLoadingScan: boolean;
+  connectingOrDeconnectingDeviceID: string | null;
+  requestPermissions(): Promise<boolean>;
+  scanForPeripherals(peripheralName: string): void;
+  stopScanForPeripherals(): void;
+  connectToDevice: (device: Device | IDevice) => Promise<void>;
+  disconnectFromDevice: (device: Device | IDevice) => void;
+}
+
+export interface IDevice {
   id: string;
-  name: string;
-  uuid: string;
-  isConnected?: boolean;
-};
+  name: string | null;
+  localName: string | null;
+  rssi: number | null;
+  serviceUUIDs: string[] | null;
+  manufacturerData: string | null;
+  serviceData: Record<string, string> | null;
+  mtu: number;
+  isConnectable: boolean | null;
+  txPowerLevel: number | null;
+}
 
 export type SearchDeviceState = {
-  devices: Device[];
+  devices: IDevice[];
+  devicesConnected: IDevice[];
 };

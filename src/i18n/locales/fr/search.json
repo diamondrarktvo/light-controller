@@ -1,10 +1,12 @@
 {
   "content": {
     "search_device": "Rechercher un appareil",
-    "empty_list": "Aucun appareil trouvé"
+    "empty_list": "Aucun appareil trouvé",
+    "searching": "Recherche en cours..."
   },
   "button": {
     "search": "Rechercher",
+    "stop": "Arreter",
     "connect": "Connecter",
     "disconnect": "Déconnecter"
   }
