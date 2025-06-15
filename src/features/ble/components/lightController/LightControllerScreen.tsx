@@ -3,16 +3,34 @@ import { useTranslation } from "react-i18next";
 import AnimatedLottieView from "lottie-react-native";
 import { Switch } from "_assets";
 import { Pressable, StyleSheet } from "react-native";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useAppSelector } from "_store";
+import { selectors as bleSelectors } from "../../bleSlice";
+import { useBLE } from "../../hooks/useBLE";
+import { useRoute } from "@react-navigation/native";
 
 export default function LightControllerScreen() {
   const { t } = useTranslation(["home", "common"]);
-  const [lightState, setLightState] = useState(false);
+  const { deviceId } = useRoute().params as { deviceId: string };
+
+  const refreshLightState = useAppSelector(bleSelectors.getRefreshLightState);
+  const devicesConnected = useAppSelector((state) =>
+    bleSelectors.getDeviceById(state, deviceId)
+  );
+  const [lightState, setLightState] = useState(
+    refreshLightState ? true : false
+  );
   const animationRef = useRef<AnimatedLottieView | null>(null);
+  const { writeLightState } = useBLE();
 
   //logics
   const toggleLight = useCallback(() => {
+    if (!devicesConnected) return;
+
     setLightState((prevState) => !prevState);
+
+    writeLightState(devicesConnected.id, lightState ? [0] : [1]);
+
     if (animationRef.current) {
       if (lightState) {
         animationRef.current.play(0, 10);
@@ -20,7 +38,11 @@ export default function LightControllerScreen() {
         animationRef.current.play(10, 0);
       }
     }
-  }, [lightState]);
+  }, [lightState, refreshLightState]);
+
+  useEffect(() => {
+    setLightState(refreshLightState ? true : false);
+  }, [refreshLightState]);
 
   return (
     <Scaffold typeOfScreen="stack">
@@ -39,7 +61,11 @@ export default function LightControllerScreen() {
               autoPlay={false}
               onAnimationLoaded={() => {
                 if (animationRef.current) {
-                  animationRef.current.play(0, 10);
+                  if (lightState) {
+                    animationRef.current.play(10, 0);
+                  } else {
+                    animationRef.current.play(0, 10);
+                  }
                 }
               }}
               loop={false}

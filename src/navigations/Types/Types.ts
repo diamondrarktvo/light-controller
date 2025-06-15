@@ -8,7 +8,9 @@ export interface StackNavigationConfig {
 export type StackParamList = {
   main_tabs: undefined;
   search_device: undefined;
-  light_controller: undefined;
+  light_controller: {
+    deviceId: string;
+  };
 };
 
 export type TabParamList = {

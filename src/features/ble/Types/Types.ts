@@ -4,6 +4,11 @@ export interface BLEApi {
   isLoadingScan: boolean;
   connectingOrDeconnectingDeviceID: string | null;
   requestPermissions(): Promise<boolean>;
+  readRefreshLightState: (device: Device) => Promise<void>;
+  writeLightState: (
+    connectedDeviceID: string,
+    lightState: [number]
+  ) => Promise<void>;
   scanForPeripherals(peripheralName: string): void;
   stopScanForPeripherals(): void;
   connectToDevice: (device: Device | IDevice) => Promise<void>;
@@ -26,4 +31,5 @@ export interface IDevice {
 export type SearchDeviceState = {
   devices: IDevice[];
   devicesConnected: IDevice[];
+  refreshLightState: number;
 };

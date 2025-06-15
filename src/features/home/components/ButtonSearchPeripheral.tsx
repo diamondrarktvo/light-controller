@@ -14,8 +14,6 @@ export function ButtonSearchPeripheral() {
   const navigation = useNavigation();
   const allDevicesConnected = useAppSelector(bleSelectors.getDevicesConnected);
 
-  console.log("allDevicesConnected", allDevicesConnected);
-
   const handleNavigateToSearchDevice = useCallback(() => {
     if (!navigation) return;
 

@@ -183,39 +183,11 @@ function getFirstLetter(text: string): string {
   return text.charAt(0);
 }
 
-function extractFileInfo(filePath: string) {
-  // Extraire le nom du fichier
-  const fileNameMatch = filePath.match(/[^/]+$/);
-
-  // Extraire l'extension
-  const extensionMatch = filePath.match(/\.([a-zA-Z0-9]+)$/);
-  const extension = extensionMatch ? extensionMatch[1].toLowerCase() : null;
-  const fileName = fileNameMatch ? fileNameMatch[0] : `video.${extension}`;
-
-  // Déduire le MIME type
-  const mimeTypes: Record<string, string> = {
-    ".aac": "audio/aac",
-    ".mp3": "audio/mpeg",
-    ".wav": "audio/wav",
-    ".ogg": "audio/ogg",
-    ".flac": "audio/flac",
-    ".m4a": "audio/mp4",
-    ".opus": "audio/opus",
-    ".oga": "audio/ogg",
-    ".weba": "audio/webm",
-    ".3gp": "audio/3gpp",
-  };
-
-  const content_type =
-    extension && mimeTypes[extension]
-      ? mimeTypes[extension]
-      : "application/octet-stream";
-
-  return { fileName, content_type };
-}
-
-function encodeBase64(data: string): string {
+function encodeBase64(data: number[]): string {
   if (!data) return "";
+
+  console.log("kindi data", data);
+  console.log("kindiii", Buffer.from(data).toString("base64"));
   return Buffer.from(data).toString("base64");
 }
 
@@ -254,7 +226,6 @@ export const Helpers = {
   isLanguageSupported,
   getAppVersion,
   getFirstLetter,
-  extractFileInfo,
   encodeBase64,
   decodeBase64,
   logger,

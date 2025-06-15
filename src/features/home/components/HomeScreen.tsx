@@ -16,11 +16,16 @@ export default function HomeScreen() {
   const allDevicesConnected = useAppSelector(bleSelectors.getDevicesConnected);
 
   //logics
-  const handleNavigateTo = useCallback(() => {
-    if (!navigation) return;
+  const handleNavigateTo = useCallback(
+    (deviceID: string) => {
+      if (!navigation) return;
 
-    navigation.navigate("light_controller");
-  }, [navigation]);
+      navigation.navigate("light_controller", {
+        deviceId: deviceID,
+      });
+    },
+    [navigation]
+  );
 
   //components
   const RenderDeviceConncected = useCallback(
@@ -32,7 +37,7 @@ export default function HomeScreen() {
             variant="tertiary"
             color="primary"
             label={item.name}
-            onPress={handleNavigateTo}
+            onPress={() => handleNavigateTo(item.id)}
           />
         </Box>
       );

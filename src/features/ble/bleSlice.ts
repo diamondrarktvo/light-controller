@@ -4,6 +4,7 @@ import { IDevice, SearchDeviceState } from "./Types/Types";
 const initialState: SearchDeviceState = {
   devices: [],
   devicesConnected: [],
+  refreshLightState: 0,
 };
 
 const bleSlice = createSlice({
@@ -40,6 +41,12 @@ const bleSlice = createSlice({
     clearAllDeviceConnected: (state) => {
       state.devices = [];
     },
+    setRefreshLightState: (state, action: PayloadAction<number>) => {
+      state.refreshLightState = action.payload;
+    },
+    clearRefreshLightState: (state) => {
+      state.refreshLightState = 0;
+    },
   },
   extraReducers: (builder) => {},
 });
@@ -50,6 +57,8 @@ export const selectors = {
     state.ble.devicesConnected,
   getDeviceById: (state: { ble: SearchDeviceState }, id: string) =>
     state.ble.devices.find((device) => device.id === id),
+  getRefreshLightState: (state: { ble: SearchDeviceState }) =>
+    state.ble.refreshLightState,
 };
 
 export const {
@@ -58,6 +67,8 @@ export const {
   setDeviceConnected,
   removeDeviceConnected,
   clearAllDeviceConnected,
+  setRefreshLightState,
+  clearRefreshLightState,
 } = bleSlice.actions;
 
 export default bleSlice.reducer;

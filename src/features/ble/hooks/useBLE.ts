@@ -11,6 +11,7 @@ import {
   removeDeviceConnected,
   setAllDevice,
   setDeviceConnected,
+  setRefreshLightState,
 } from "../bleSlice";
 import { getBleErrorMessage, toSerializableDevice } from "../bleUtils";
 import {
@@ -114,7 +115,7 @@ export const useBLE = (): BLEApi => {
       setConnectingOrDeconnectingDeviceID(device.id);
       const deviceConnection = await bleManager.connectToDevice(device.id);
       await deviceConnection.discoverAllServicesAndCharacteristics();
-      await refreshLightState(deviceConnection);
+      await readRefreshLightState(deviceConnection);
 
       stopScanForPeripherals();
       setConnectingOrDeconnectingDeviceID(null);
@@ -130,8 +131,11 @@ export const useBLE = (): BLEApi => {
     }
   };
 
-  const refreshLightState = async (connectedDevice: Device) => {
+  const readRefreshLightState = async (
+    connectedDevice: Device
+  ): Promise<void> => {
     if (!connectedDevice) return;
+
     try {
       const char = await connectedDevice.readCharacteristicForService(
         SMART_LIGHT_PERIPHERAL_SERVICE_UUID,
@@ -139,8 +143,37 @@ export const useBLE = (): BLEApi => {
       );
 
       const decoded = Helpers.decodeBase64(char.value);
+
+      dispatch(setRefreshLightState(decoded as number));
     } catch (e) {
       console.error("Erreur lecture état lumière :", e);
+    }
+  };
+
+  const writeLightState = async (
+    connectedDeviceID: string,
+    newLightState: number[]
+  ) => {
+    try {
+      const allConnectedDevice = await bleManager.connectedDevices([
+        SMART_LIGHT_PERIPHERAL_SERVICE_UUID,
+      ]);
+
+      const connectedDevice = allConnectedDevice.find(
+        (device) => device.id === connectedDeviceID
+      );
+
+      await connectedDevice?.writeCharacteristicWithoutResponseForService(
+        SMART_LIGHT_PERIPHERAL_SERVICE_UUID,
+        SMART_LIGHT_PERIPHERAL_CHARACTERISTIC_UUID,
+        Helpers.encodeBase64(newLightState)
+      );
+    } catch (error) {
+      Helpers.logger("Error writing light state", error);
+      Helpers.showToast(
+        "error",
+        getBleErrorMessage(error as BleError | Error | null, {}, t)
+      );
     }
   };
 
@@ -164,6 +197,8 @@ export const useBLE = (): BLEApi => {
   return {
     isLoadingScan,
     connectingOrDeconnectingDeviceID,
+    readRefreshLightState,
+    writeLightState,
     requestPermissions,
     scanForPeripherals,
     stopScanForPeripherals,
