@@ -5,8 +5,8 @@ const initialState: SearchDeviceState = {
   devices: [],
 };
 
-const deviceSlice = createSlice({
-  name: "device",
+const bleSlice = createSlice({
+  name: "ble",
   initialState,
   reducers: {
     setDevice: (state, action: PayloadAction<Device>) => {
@@ -22,6 +22,10 @@ const deviceSlice = createSlice({
         state.devices.push(device);
       }
     },
+    removeDevice: (state, action: PayloadAction<string>) => {
+      const deviceId = action.payload;
+      state.devices = state.devices.filter((device) => device.id !== deviceId);
+    },
     clearAllDeviceConnected: (state) => {
       state.devices = [];
     },
@@ -36,6 +40,7 @@ export const selectors = {
     state.deviceConnected.devices.find((device) => device.id === id),
 };
 
-export const { setDevice, clearAllDeviceConnected } = deviceSlice.actions;
+export const { setDevice, removeDevice, clearAllDeviceConnected } =
+  bleSlice.actions;
 
-export default deviceSlice.reducer;
+export default bleSlice.reducer;

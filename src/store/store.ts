@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { BaseApi } from "_services";
 import themeReducer from "../features/theme/themeSlice";
-import deviceReducer from "../features/searchDevice/SearchDeviceSlice";
+import bleReducer from "../features/ble/bleSlice";
 import { useDispatch, useSelector } from "react-redux";
 import type { TypedUseSelectorHook } from "react-redux";
 
@@ -10,7 +10,7 @@ export const store = configureStore({
   reducer: {
     [BaseApi.reducerPath]: BaseApi.reducer,
     theme: themeReducer,
-    device: deviceReducer,
+    device: bleReducer,
   },
 
   middleware: (getDefaultMiddleware) =>

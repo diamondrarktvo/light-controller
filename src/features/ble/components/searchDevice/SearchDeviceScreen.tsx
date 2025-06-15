@@ -1,11 +1,11 @@
 import { Box, Button, Column, EmptyList, Row, Scaffold, Text } from "_shared";
 import { useTranslation } from "react-i18next";
 import { useCallback, useMemo } from "react";
-import { Device } from "../Types/Types";
 import { FlashList } from "@shopify/flash-list";
 import { useNavigation } from "@react-navigation/native";
 import { useAppDispatch } from "_store";
-import { setDevice } from "../SearchDeviceSlice";
+import { Device } from "../../Types/Types";
+import { setDevice } from "../../bleSlice";
 
 export default function SearchDeviceScreen() {
   const { t } = useTranslation(["home", "common", "search"]);

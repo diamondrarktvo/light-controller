@@ -3,4 +3,4 @@ export { SettingScreen } from "./setting";
 export { HomeScreen } from "./home";
 
 //STACK SCREENS
-export { SearchDeviceScreen } from "./searchDevice";
+export { SearchDeviceScreen, LightControllerScreen } from "./ble";
