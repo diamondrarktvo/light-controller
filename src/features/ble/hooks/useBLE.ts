@@ -7,6 +7,7 @@ import { useMemo, useState } from "react";
 import { Helpers } from "_utils";
 import { useAppDispatch } from "_store";
 import {
+  removeDevice,
   removeDeviceConnected,
   setAllDevice,
   setDeviceConnected,
@@ -149,7 +150,7 @@ export const useBLE = (): BLEApi => {
         .cancelDeviceConnection(connectedDevice.id)
         .then(() => {
           dispatch(removeDeviceConnected(connectedDevice));
-          dispatch(removeDeviceConnected(connectedDevice));
+          dispatch(removeDevice(connectedDevice));
           setConnectingOrDeconnectingDeviceID(null);
         })
         .catch((error) => {
